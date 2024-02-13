@@ -1,6 +1,8 @@
-package yang.opencampus.opencampusback;
+package yang.opencampus.opencampusback.entity;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+import org.springframework.data.mongodb.core.mapping.FieldType;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -12,8 +14,9 @@ import lombok.Data;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Field(name="_id",targetType = FieldType.OBJECT_ID)
     private String CommentID;
-    private int teacherid;
+    private int teacherID;
     private int userid;
     private String nickname;
     private String EZtopass;
@@ -22,11 +25,12 @@ public class Comment {
     private String willCheck;
     private String recommend;
     private String others;
-    private int agree;
+    private int agreenum;
 
     public Comment(int teacherid, int userid, String nickname, String eZtopass, String eZtoHighScore, String useful,
-            String willCheck, String recommend, String others) {
-        this.teacherid = teacherid;
+            String willCheck, String recommend, String others,String CommentID) {
+        this.CommentID =CommentID;
+        this.teacherID = teacherid;
         this.userid = userid;
         this.nickname = nickname;
         EZtopass = eZtopass;
@@ -35,7 +39,7 @@ public class Comment {
         this.willCheck = willCheck;
         this.recommend = recommend;
         this.others = others;
-        this.agree=0;
+        this.agreenum=0;
     }
     public Comment() {
     }

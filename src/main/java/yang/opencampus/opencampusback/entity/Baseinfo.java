@@ -1,14 +1,16 @@
-package yang.opencampus.opencampusback;
+package yang.opencampus.opencampusback.entity;
 
 import java.util.ArrayList;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import jakarta.persistence.Id;
 import lombok.Data;
 
 @Document(collection = "baseinfo")
 @Data
 public class Baseinfo {
+    @Id
     private int teacherID;
     private String name;
     private String base;

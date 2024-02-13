@@ -2,10 +2,21 @@ package yang.opencampus.opencampusback;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import yang.opencampus.opencampusback.entity.Baseinfo;
+import yang.opencampus.opencampusback.entity.Comment;
+import yang.opencampus.opencampusback.entity.User;
+import yang.opencampus.opencampusback.service.MongoDB;
+import yang.opencampus.opencampusback.service.Mysql;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
@@ -15,7 +26,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class Rest {
     @Autowired
     private Mysql mysqldb;
-
+    private MongoDB mongo;
+    @Autowired
+    public Rest(MongoDB mongo){
+        this.mongo=mongo;
+    }
     @GetMapping("/hello")
     public String hello() {
         return "hello";
@@ -34,9 +49,16 @@ public class Rest {
     }
     @PostMapping("/baseinfo")
     public Baseinfo getbaseinfo(@RequestParam int teacherID) {
-
-        MongoDB mongo=new MongoDB();
+       
         return mongo.getBaseinfoByTeacherID(teacherID);
+    }
+    @GetMapping("/getComment")
+    public List<Comment> getComment(@RequestParam int teacherID,@RequestParam int m,@RequestParam int n){
+        return mongo.findCommentsByAgreeNum(teacherID, n, m);
+    }
+    @PostMapping("/isagree")
+    public void postMethodName(@RequestParam String commentID,@RequestParam boolean isagree) {
+        mongo.updateComment(isagree,commentID);
     }
     
     

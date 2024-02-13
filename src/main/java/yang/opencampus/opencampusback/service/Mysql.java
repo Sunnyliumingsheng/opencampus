@@ -1,22 +1,18 @@
-package yang.opencampus.opencampusback;
+package yang.opencampus.opencampusback.service;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
+import yang.opencampus.opencampusback.entity.User;
+import yang.opencampus.opencampusback.repository.UserRepository;
 
 @Service
 public class Mysql {
-    @Autowired
-    private UserRepository userRepository;
-    public Mysql(UserRepository userRepository){
-        this.userRepository = userRepository;
-    }
 
-    @SuppressWarnings("null")
-    @Transactional
+    private UserRepository userRepository;
+
     public void register(User newUser){
         userRepository.save(newUser);
     }

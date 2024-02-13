@@ -1,4 +1,4 @@
-package yang.opencampus.opencampusback;
+package yang.opencampus.opencampusback.entity;
 
 
 
