@@ -10,5 +10,5 @@ import yang.opencampus.opencampusback.entity.User;
 @Repository
 public interface UserRepository extends JpaRepository<User,Integer>{
     Optional<User> findByEmail(String email);
-    public boolean hasEmail(String email);
+    public boolean existsByEmail(String email);
 }

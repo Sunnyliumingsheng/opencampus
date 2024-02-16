@@ -41,6 +41,6 @@ public class Mysql {
         }
     }
     public boolean accountHasExist(String email){
-        return userRepository.hasEmail(email);
+        return userRepository.existsByEmail(email);
     }
 }

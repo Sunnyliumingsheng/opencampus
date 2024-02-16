@@ -10,8 +10,6 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @EnableMongoRepositories
 @EnableJpaRepositories
-@EnableAutoConfiguration
-@EnableTransactionManagement
 public class OpencampusbackApplication {
 
 	public static void main(String[] args) {

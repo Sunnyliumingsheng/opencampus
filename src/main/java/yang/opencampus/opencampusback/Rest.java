@@ -26,10 +26,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RestController
 @RequestMapping("/") 
 public class Rest {
+    @Autowired
     private Mysql mysqldb;
+    @Autowired
     private MongoDB mongo;
     
-    @Autowired
+    
     public Rest(MongoDB mongo,Mysql mysqldb){
         this.mongo=mongo;
         this.mysqldb=mysqldb;
