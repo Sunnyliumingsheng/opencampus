@@ -4,17 +4,20 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import jakarta.transaction.Transactional;
 import yang.opencampus.opencampusback.entity.User;
 import yang.opencampus.opencampusback.repository.UserRepository;
 
 @Service
 public class Mysql {
-
     private UserRepository userRepository;
 
-    public void register(User newUser){
-        userRepository.save(newUser);
+    public Mysql(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+
+    public boolean register(User newUser){
+        User user= userRepository.save(newUser);
+        return (user !=null);
     }
     public boolean login(String email,String password){
         Optional<User> userOptional = userRepository.findByEmail(email);
@@ -36,5 +39,8 @@ public class Mysql {
             System.out.println("用户不存在！");
             return false;
         }
+    }
+    public boolean accountHasExist(String email){
+        return userRepository.hasEmail(email);
     }
 }

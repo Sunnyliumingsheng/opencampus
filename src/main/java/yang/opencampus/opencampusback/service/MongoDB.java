@@ -16,7 +16,6 @@ import yang.opencampus.opencampusback.repository.MongoDBRepository;
 public class MongoDB {
     private BaseinfoRepository baseinfoRepository;
 
-    @Autowired
     public MongoDB(BaseinfoRepository baseinfoRepository){
         this.baseinfoRepository = baseinfoRepository;
     }

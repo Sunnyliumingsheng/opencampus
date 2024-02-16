@@ -11,7 +11,7 @@ import jakarta.persistence.Id;
 @Entity
 @Data
 public class User {
-
+////////////此仅做测试用
     public User(String email, String password) {
         this.email = email;
         this.password = password;
@@ -20,8 +20,7 @@ public class User {
         this.id=22;
         this.nickname="yangming";
     }
-    public User(int id, String email, String password, String major, int admission ,String nickname) {
-        this.id = id;
+    public User( String email, String password, String major, int admission ,String nickname) {
         this.email = email;
         this.password = password;
         this.major = major;
