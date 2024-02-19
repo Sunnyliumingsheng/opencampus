@@ -10,6 +10,7 @@ import org.springframework.data.mongodb.core.aggregation.AggregationOperation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 
+import yang.opencampus.opencampusback.entity.Baseinfo;
 import yang.opencampus.opencampusback.entity.Comment;
 
 import org.springframework.data.mongodb.core.query.Query;
@@ -49,5 +50,15 @@ public class MongoDBRepository {
         // 执行更新操作
         mongoTemplate.updateFirst(query, update, "comments");
     }
+    public List<Baseinfo> findByNameContaining(String teacherName) {
+        // 构建模糊查询条件，这里使用正则表达式来匹配包含关键字的文档
+        Criteria criteria = Criteria.where("name").regex(teacherName);
+        Query query = new Query(criteria);
+
+        // 执行查询并返回结果
+        List<Baseinfo> results = mongoTemplate.find(query, Baseinfo.class);
+        return results;
+    }
+
     
 }

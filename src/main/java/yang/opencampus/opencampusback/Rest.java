@@ -18,13 +18,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 
 
 @RestController
-@RequestMapping("/") 
+@RequestMapping("/")
+@CrossOrigin(origins = "http://localhost:5173") 
 public class Rest {
     @Autowired
     private Mysql mysqldb;
@@ -32,20 +36,18 @@ public class Rest {
     private MongoDB mongo;
     
     
-    public Rest(MongoDB mongo,Mysql mysqldb){
-        this.mongo=mongo;
-        this.mysqldb=mysqldb;
-    }
-
-    @GetMapping("/hello")
-    public String hello() {
-        return "hello";
+    
+    @PostMapping("/hello")
+    public String hello(@RequestParam String hello,@RequestParam String bye) {
+        System.out.println("hello I can see you");
+        return "hello"+hello+bye;
     }
 
      @PostMapping("/register") 
-     public String register(@RequestParam String email,@RequestParam String password,HttpServletResponse response,@RequestParam String major,@RequestParam int admission,@RequestParam String nickname )
+     public String register(@RequestParam("email") String email,@RequestParam ("password") String password,@RequestParam ("major") String major,@RequestParam ("admission") int admission,@RequestParam("nickname") String nickname,HttpServletResponse response )
     {     
     User newUser=new User(email,password,major,admission,nickname);
+    System.out.println(newUser.toString());
     boolean emailAlreadyRegistered;
     emailAlreadyRegistered=mysqldb.accountHasExist(email);
     if(!emailAlreadyRegistered){
@@ -59,32 +61,32 @@ public class Rest {
 ////////////////////以上为注册api，输入账号和密码等信息可以进行注册,如果不存在就会注册并提供token
     } 
     @PostMapping("/login")
-    public boolean login(@RequestParam String email,@RequestParam String password,@CookieValue(name = "token",defaultValue ="nothing") String token,HttpServletResponse response) {
+    public String login(@RequestParam String email,@RequestParam String password,@CookieValue(name = "token",defaultValue ="nothing") String token,HttpServletResponse response) {
         if(token.equals("nothing")){
             if(mysqldb.login(email,password)){//没有token，进行登录
                 Cookie cookie=new Cookie("token",Token.generateJWT(email));
                 response.addCookie(cookie);
                 //登录成功给用户token
-                return true;
+                return "login";
             }else{
                 //登录失败返回false
-                return false;
+                return "failed";
             }
         }else{
             //查找到了toke
             if(Token.checkTokenAndEmail(token,email)){
                 //此token是正确的可以直接登录
-                return true;
+                return "login";
             }else{
                 //此token是过期的或者是错误的又或者是与email不同（可能是一个人注册了两个账号）
                 if(mysqldb.login(email,password)){//没有token，进行登录
                     Cookie cookie=new Cookie("token",Token.generateJWT(email));
                     response.addCookie(cookie);
                     //登录成功给用户token
-                    return true;
+                    return "login";
                 }else{
                     //登录失败返回false
-                    return false;
+                    return "failed";
                 }
             }
         }
@@ -106,6 +108,11 @@ public class Rest {
         return Token.checkToken(token);
 
     }
+    @PostMapping("/selectTeacher")
+    public List<Baseinfo> selectTeacher(@RequestParam String teacherName) {
+        return mongo.selectTeacherName(teacherName);
+    }
+    
     
     
     

@@ -1,5 +1,6 @@
 package yang.opencampus.opencampusback.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,13 @@ public class MongoDB {
     }
     public List<Comment> findCommentsByAgreeNum(int teacherID,int n,int m){
         return mongoDBRepository.findCommentsByAgreeNum(teacherID, n, m);
+    }
+    public List<Baseinfo> selectTeacherName(String teacherName){
+        if(!teacherName.equals(""))
+        return mongoDBRepository.findByNameContaining(teacherName);
+        else{
+            List<Baseinfo> nulllist =new ArrayList<Baseinfo>();
+            return nulllist;
+        }
     }
 }
