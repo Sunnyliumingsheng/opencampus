@@ -59,6 +59,15 @@ public class MongoDBRepository {
         List<Baseinfo> results = mongoTemplate.find(query, Baseinfo.class);
         return results;
     }
-
+    public List<Baseinfo> findByNameContainingAndDept(String dept,String teacherName){
+        Criteria criteria = new Criteria().andOperator(
+        Criteria.where("dept").is(dept),
+        Criteria.where("name").regex(teacherName)
+        );
+        Query query = new Query(criteria);
+        // 执行查询并返回结果
+        List<Baseinfo> results = mongoTemplate.find(query, Baseinfo.class);
+        return results;
+    }
     
 }

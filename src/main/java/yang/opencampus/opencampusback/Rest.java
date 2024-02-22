@@ -112,7 +112,10 @@ public class Rest {
     public List<Baseinfo> selectTeacher(@RequestParam String teacherName) {
         return mongo.selectTeacherName(teacherName);
     }
-    
+    @PostMapping("/selectTeacherAndDept")
+    public List<Baseinfo> selectTeacherAndDept(@RequestParam String dept,@RequestParam String teacherName) {
+        return mongo.deptAndSelectTeacherName(dept, teacherName);
+    }
     
     
     
