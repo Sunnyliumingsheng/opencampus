@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin(origins = "http://localhost:5173") 
+@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true") 
 public class Rest {
     @Autowired
     private Mysql mysqldb;
@@ -38,9 +38,11 @@ public class Rest {
     
     
     @PostMapping("/hello")
-    public String hello(@RequestParam String hello,@RequestParam String bye) {
+    public String hello(@RequestParam String token,@RequestParam String bye) {
         System.out.println("hello I can see you");
-        return "hello"+hello+bye;
+        String email=Token.tokenGetEmail(token);
+        System.out.println("email"+email);
+        return "hello"+bye;
     }
 
      @PostMapping("/register") 
@@ -62,6 +64,7 @@ public class Rest {
     } 
     @PostMapping("/login")
     public String login(@RequestParam String email,@RequestParam String password,@CookieValue(name = "token",defaultValue ="nothing") String token,HttpServletResponse response) {
+        System.out.println(email+password);
         if(token.equals("nothing")){
             if(mysqldb.login(email,password)){//没有token，进行登录
                 Cookie cookie=new Cookie("token",Token.generateJWT(email));
@@ -95,9 +98,9 @@ public class Rest {
     public Baseinfo getbaseinfo(@RequestParam int teacherID) {
         return mongo.getBaseinfoByTeacherID(teacherID);
     }
-    @GetMapping("/getComment")//按照认同数量排序给出指定多的评论
-    public List<Comment> getComment(@RequestParam int teacherID,@RequestParam int m,@RequestParam int n){
-        return mongo.findCommentsByAgreeNum(teacherID, n, m);
+    @PostMapping("/getComment")//按照认同数量排序给出指定多的评论
+    public List<Comment> getComment(@RequestParam int teacherID,@RequestParam int max,@RequestParam int min){
+        return mongo.findCommentsByAgreeNum(teacherID, min, max);
     }
     @PostMapping("/isagree")//对评论进行认同或者不认同
     public void postMethodName(@RequestParam String commentID,@RequestParam boolean isagree) {
@@ -116,7 +119,12 @@ public class Rest {
     public List<Baseinfo> selectTeacherAndDept(@RequestParam String dept,@RequestParam String teacherName) {
         return mongo.deptAndSelectTeacherName(dept, teacherName);
     }
-    
+    @PostMapping("/addComment")
+    public void addComment(@CookieValue(name = "token",defaultValue ="nothing") String token,@RequestParam int teacherID,@RequestParam String className,@RequestParam String nickname,@RequestParam int eztopass,@RequestParam int eztohighscore,@RequestParam int useful,@RequestParam boolean willcheck,@RequestParam int recommend,@RequestParam String others){
+        System.out.println(eztohighscore);
+        String email=Token.tokenGetEmail(token);
+        mongo.addComment(teacherID,email,className,nickname,eztopass,eztohighscore,useful,willcheck,recommend,others);
+    }
     
     
     

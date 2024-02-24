@@ -52,7 +52,7 @@ public class Token {
             System.out.println("payloadJSON" + payloadJson);
             String signature = Base64.getEncoder().encodeToString(hexString.toString().getBytes());
             String payload=Base64.getEncoder().encodeToString(payloadJson.getBytes());
-            return payload+"."+signature;
+            return (payload+"."+signature);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
             return "error";
@@ -200,5 +200,27 @@ public class Token {
         }
         
         return true;
+    }
+    static public String tokenGetEmail(String token){
+        System.out.println(token);
+        String[] parts = token.split("\\.");
+        String payloadJson = parts[0];
+        System.out.println(payloadJson);
+        // 对Base64编码后的payload进行解码
+        byte[] decodedBytes = Base64.getDecoder().decode(payloadJson);
+        String decodedPayloadJson = new String(decodedBytes);
+        System.out.println("Base64解码后的Payload JSON字符串: " + decodedPayloadJson);
+        ObjectMapper decodemapper = new ObjectMapper();
+        // 将解码后的JSON字符串转换回Map对象
+        try {
+            Map<String, Object> decodedPayload = decodemapper.readValue(decodedPayloadJson, Map.class);
+
+            String payloadEmail=(String) decodedPayload.get("email");
+            return payloadEmail;
+        }
+        catch (JsonProcessingException e) {
+        e.printStackTrace();
+        return("failed");
+        }
     }
 }

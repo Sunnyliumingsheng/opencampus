@@ -1,5 +1,6 @@
 package yang.opencampus.opencampusback.entity;
 
+import org.springframework.data.annotation.TypeAlias;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.data.mongodb.core.mapping.FieldType;
@@ -9,37 +10,36 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Data;
 
-@Document(collection = "comment")
+@Document(collection = "comments")
 @Data
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Field(name="_id",targetType = FieldType.OBJECT_ID)
-    private String CommentID;
+    private String _id;
     private int teacherID;
-    private int userid;
+    private String userEmail;
+    private String className;
     private String nickname;
-    private String EZtopass;
-    private String EZtoHighScore;
-    private String Useful;
-    private String willCheck;
-    private String recommend;
+    private int EZtoPass;
+    private int EZtoHighScore;
+    private int useful;
+    private boolean willCheck;
+    private int recommend;
     private String others;
     private int agreenum;
 
-    public Comment(int teacherid, int userid, String nickname, String eZtopass, String eZtoHighScore, String useful,
-            String willCheck, String recommend, String others,String CommentID) {
-        this.CommentID =CommentID;
+    public Comment(int teacherid, String userEmail,String className, String nickname, int EZtoPass, int EZtoHighScore, int useful,
+            boolean willCheck, int recommend, String others) {
         this.teacherID = teacherid;
-        this.userid = userid;
+        this.userEmail = userEmail;
         this.nickname = nickname;
-        EZtopass = eZtopass;
-        EZtoHighScore = eZtoHighScore;
-        Useful = useful;
+        this.EZtoPass = EZtoPass;
+        this.EZtoHighScore = EZtoHighScore;
+        this.useful = useful;
         this.willCheck = willCheck;
         this.recommend = recommend;
         this.others = others;
         this.agreenum=0;
+        this.className=className;
     }
     public Comment() {
     }

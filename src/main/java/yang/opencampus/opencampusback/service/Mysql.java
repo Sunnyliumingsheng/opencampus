@@ -36,7 +36,7 @@ public class Mysql {
             }
         } else {
             // 用户不存在
-            System.out.println("用户不存在！");
+            System.out.println("用户不存在！"+String.valueOf(email));
             return false;
         }
     }
