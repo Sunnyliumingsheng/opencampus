@@ -28,7 +28,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/")
-@CrossOrigin(origins = "http://localhost:5173",allowCredentials = "true") 
 public class Rest {
     @Autowired
     private Mysql mysqldb;
@@ -38,11 +37,9 @@ public class Rest {
     
     
     @PostMapping("/hello")
-    public String hello(@RequestParam String token,@RequestParam String bye) {
-        System.out.println("hello I can see you");
-        String email=Token.tokenGetEmail(token);
-        System.out.println("email"+email);
-        return "hello"+bye;
+    public String hello() {
+        
+        return "hello8080";
     }
 
      @PostMapping("/register") 
